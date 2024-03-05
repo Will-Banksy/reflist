@@ -13,5 +13,8 @@ pub struct Args {
 	pub format_string: String,
 	/// The field_name of the field to sort references by
 	#[arg(short, long, default_value = "author")]
-	pub sort_by: String
+	pub sort_by: String,
+	/// Whether to automatically copy the html to clipboard, in html format (ready for pasting into a WYSIWYG editor)
+	#[arg(short, long)]
+	pub copy: bool
 }
