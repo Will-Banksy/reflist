@@ -1,0 +1,13 @@
+[package]
+name = "reflist"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+biblatex = "0.9.1"
+clap = { version = "4.4.18", features = [ "derive" ] }
+clio = { version = "0.3.5", features = [ "clap-parse" ] }
+unicode-segmentation = "1.11.0"
+markdown = "1.0.0-alpha.16"
