@@ -1,7 +1,8 @@
 mod args;
 mod utils;
+mod config;
 
-use std::{env, io::{stdin, Read}, process::{self, ExitCode}};
+use std::{collections::HashMap, env, io::{stdin, Read}, process::{self, ExitCode}};
 
 use arboard::{Clipboard, SetExtLinux};
 use args::Args;
@@ -9,6 +10,8 @@ use biblatex::{Bibliography, Entry};
 use clap::Parser;
 use markdown::to_html;
 use utils::get_field_names;
+
+use crate::config::Config;
 
 const CLIPBOARD_DAEMONIZE_ARG: &'static str = "__internal_daemonize";
 
@@ -44,6 +47,24 @@ fn main() -> ExitCode {
 
 	let mut args = Args::parse();
 
+	let config = {
+		let mut config_str = String::new();
+		if let Ok(_) = args.config_file.read_to_string(&mut config_str) {
+			match toml::from_str::<Config>(&config_str) {
+				Ok(config) => config,
+				Err(e) => {
+					eprintln!("Error: Config file {} is not correctly formatted: {e}", args.config_file.path());
+					return ExitCode::FAILURE;
+				}
+			}
+		} else {
+			eprintln!("Error: Config file {} could not be read", args.config_file.path());
+			return ExitCode::FAILURE;
+		}
+	};
+
+	println!("Config: {:?}", config);
+
 	let mut bibtext = String::new();
 	if let Err(e) = args.file.read_to_string(&mut bibtext) {
 		eprintln!("Error: Input file could not be read: {e}");
@@ -57,9 +78,7 @@ fn main() -> ExitCode {
 		}
 	};
 
-	let format_string = &args.format_string;
-
-	let fields = get_field_names(format_string);
+	let format_fields: HashMap<String, Vec<String>> = config.formats.iter().map(|(entry_type, fstr)| (entry_type.clone(), get_field_names(fstr))).collect();
 
 	let mut references = Vec::new();
 
@@ -67,16 +86,19 @@ fn main() -> ExitCode {
 	bib_entries.sort_by_key(|entry| entry.get_as::<String>(&args.sort_by).unwrap());
 
 	for entry in bib_entries {
-		let mut reference = format_string.clone();
-		for field in &fields {
-			if let Ok(value) = entry.get_as::<String>(field) {
-				reference = reference.replace(&format!("${{{}}}", field), &value); // &value.to_biblatex_string(true));
-			} else {
-				eprintln!("Warning: Entry {} in bibliography does not contain a value for required field {} (or it could not be parsed)", entry.key, field);
+		let entry_type = entry.entry_type.to_string();
+		if let Some(mut reference) = config.formats.get(&entry_type).cloned() {
+			for field in &format_fields[&entry_type] {
+				if let Ok(value) = entry.get_as::<String>(field) {
+					reference = reference.replace(&format!("${{{}}}", field), &value); // &value.to_biblatex_string(true));
+				} else {
+					eprintln!("Warning: Entry {} in bibliography does not contain a value for required field {} (or it could not be parsed)", entry.key, field);
+				}
 			}
+			references.push(reference);
+		} else {
+			eprintln!("Warning: Entry type {} does not have a reference format - omitting", entry.entry_type.to_string())
 		}
-
-		references.push(reference);
 	}
 
 	// TODO: Print markdown representation of references? Perhaps add arg for output format?
@@ -84,7 +106,7 @@ fn main() -> ExitCode {
 	// 	println!("- {r}");
 	// }
 
-	let references_list_str = references.iter_mut().map(|r| format!("- {r}")).collect::<Vec<_>>().join("\n");
+	let references_list_str = references.join("\n");
 
 	let mut references_list_html = to_html(&references_list_str);
 
@@ -92,6 +114,9 @@ fn main() -> ExitCode {
 	references_list_html = references_list_html.replace("</em>", "</span>");
 	references_list_html = references_list_html.replace("<strong>", "<span style=\"font-weight:700;\">");
 	references_list_html = references_list_html.replace("</strong>", "</span>");
+	if !config.text_style.is_empty() {
+		references_list_html = format!("<span style=\"{}\">{}</span>", config.text_style, references_list_html);
+	}
 
 	println!("{references_list_html}");
 

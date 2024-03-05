@@ -1,0 +1,5 @@
+text_style = "font-family:'Source Sans Pro';font-size:11pt;"
+
+[formats]
+article = "- ${author} (${year}) ‘${title}’, *${journal}*, ${volume}(${number}), pp. ${pages}. doi: ${doi}"
+misc = "- ${author} (${year}) *${title}*. Available at: ${howpublished} (${note})"
