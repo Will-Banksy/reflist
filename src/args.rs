@@ -8,7 +8,7 @@ pub struct Args {
 	#[clap(value_parser, default_value="-")]
 	#[arg(short = 'i', long)]
 	pub file: Input,
-	/// The format string, where fields are inserted at ${field_name}, e.g. the authors would be inserted at ${authors}
+	/// The format string, where fields are inserted at ${field_name}, e.g. the author field would be inserted at ${author}
 	#[arg(short, long)]
 	pub format_string: String,
 	/// The field_name of the field to sort references by

@@ -19,8 +19,8 @@ Usage: reflist [OPTIONS] --format-string <FORMAT_STRING>
 
 Options:
   -i, --file <FILE>                    The bibtex (.bib) input file [default: -]
-  -f, --format-string <FORMAT_STRING>  The format string, where fields are inserted at ${field_name}, e.g. the authors would be inserted at ${authors}
-  -s, --sort-by <SORT_BY>              The field_name of the field to sort references by. Defaults to "author" [default: author]
+  -f, --format-string <FORMAT_STRING>  The format string, where fields are inserted at ${field_name}, e.g. the author field would be inserted at ${author}
+  -s, --sort-by <SORT_BY>              The field_name of the field to sort references by [default: author]
   -h, --help                           Print help
   -V, --version                        Print version
 ```
@@ -29,7 +29,7 @@ Options:
 
 Specifying the format for reference output is done with format strings, which are just markdown but instances of ${field_name} are replaced by the value of field_name in the bibtex entry.
 
-E.g. Here is a simple Harvard-esque format string for journal articles:
+E.g. Here is a simple Harvard-esque format string for journal articles (the format my uni uses):
 ```
 ${AUTHOR} (${YEAR}) ‘${TITLE}’, *${JOURNAL}*, ${VOLUME}(${NUMBER}), pp. ${PAGES}. doi: ${DOI}
 ```
