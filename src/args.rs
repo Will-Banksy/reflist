@@ -8,7 +8,7 @@ pub struct Args {
 	#[clap(value_parser, default_value="-")]
 	#[arg(short = 'i', long)]
 	pub file: Input,
-	/// The format string, where fields are inserted at ${field_name}, e.g. the author field would be inserted at ${author}
+	/// The path to the config file
 	#[clap(value_parser, default_value="Reflist.toml")]
 	#[arg(short = 'f', long)]
 	pub config_file: Input,

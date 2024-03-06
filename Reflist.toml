@@ -2,4 +2,5 @@ text_style = "font-family:'Source Sans Pro';font-size:11pt;"
 
 [formats]
 article = "- ${author} (${year}) ‘${title}’, *${journal}*, ${volume}(${number}), pp. ${pages}. doi: ${doi}"
-misc = "- ${author} (${year}) *${title}*. Available at: ${howpublished} (${note})"
+online = "- ${author} (${year}) *${title}* [${primaryclass}] Available at: ${url} (Accessed: ${urldate})"
+software= "- ${author} (${year}) *${title}* (v${version}) [${primaryclass}] Available at: ${url} (Accessed: ${urldate})"
