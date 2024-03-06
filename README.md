@@ -1,5 +1,7 @@
 TODO: Testing
 
+TODO: Allow optional arguments in format strings, and support specifying surrounding text to exclude in the case that the argument isn't available or set, in a format perhaps like `[, ${volume}][(${number})]` where the stuff in the square brackets is only outputted if the argument is (multiple args in single set of square brackets? "else" clause like `...[, ${url}][.]` (where the content in the square brackets after the first pair is output if the `url` argument isn't present)). This might require a more intelligent approach to evaluating the format strings
+
 # reflist
 
 A small tool to generate a sorted, formatted reference list ready for pasting into a WYSIWSG editor, for those of us who haven't (yet) resorted to latex.
