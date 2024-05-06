@@ -17,5 +17,8 @@ pub struct Args {
 	pub sort_by: String,
 	/// Whether to automatically copy the html to clipboard, in html format (ready for pasting into a WYSIWYG editor)
 	#[arg(short, long)]
-	pub copy: bool
+	pub copy: bool,
+	/// Whether to report a summary of the reference counts
+	#[arg(short = 'n', long)]
+	pub counts: bool
 }

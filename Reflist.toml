@@ -1,6 +1,9 @@
 text_style = "font-family:'Source Sans Pro';font-size:11pt;"
 
 [formats]
-article = "- ${author} (${year}) ‘${title}’, *${journal}*, ${volume}(${number}), pp. ${pages}. doi: ${doi}"
-online = "- ${author} (${year}) *${title}* [${primaryclass}] Available at: ${url} (Accessed: ${urldate})"
-software= "- ${author} (${year}) *${title}* (v${version}) [${primaryclass}] Available at: ${url} (Accessed: ${urldate})"
+article = "- ${author} (${year}) ‘${title}’, *${journal}*, ${volume}(${number}), pp. ${pages}. doi: ${doi}."
+online = "- ${author} (${year}) *${title}* [${primaryclass}] Available at: [${url}](${url}) (Accessed: ${urldate})"
+software = "- ${author} (${year}) *${title}* (v${version}) [${primaryclass}] Available at: [${url}](${url}) (Accessed: ${urldate})"
+phdthesis = "- ${author} (${year}) *${title}*."
+mastersthesis = "- ${author} (${year}) *${title}*."
+inproceedings = "- ${author} (${year}) ‘${title}’, *${booktitle}*. ${address}: ${publisher}, pp. ${pages}."

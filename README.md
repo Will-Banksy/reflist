@@ -1,6 +1,6 @@
 TODO: Testing
 
-TODO: Allow optional arguments in format strings, and support specifying surrounding text to exclude in the case that the argument isn't available or set, in a format perhaps like `[, ${volume}][(${number})]` where the stuff in the square brackets is only outputted if the argument is (multiple args in single set of square brackets? "else" clause like `...[, ${url}][.]` (where the content in the square brackets after the first pair is output if the `url` argument isn't present)). This might require a more intelligent approach to evaluating the format strings
+TODO: Allow optional arguments in format strings, and support specifying surrounding text to exclude in the case that the argument isn't available or set, in a format perhaps like `[, ${volume}][(${number})]` where the stuff in the square brackets is only outputted if the argument is (multiple args in single set of square brackets? "else" clause like `...[, ${url}][.]` (where the content in the square brackets after the first pair is output if the `url` argument isn't present)). This might require a more intelligent approach to evaluating the format strings. Also support multiple arguments in `[]`, to only include information if both/all are present: `[${url}. Accessed: ${urldate}]` (not sure of an actual use case for this to be honest). Note that there still needs to be a way of including `[]` in the final reference string, as it's sometimes used. Backslashes (`\[\]`)?
 
 # reflist
 
@@ -16,7 +16,7 @@ on the output text, for the case of editors like OnlyOffice which don't automati
 
 ~~On linux, the output can be piped through `xclip` or `wl-copy` to automatically copy it to the clipboard with the correct MIME type~~ Reflist now supports automatic copying to clipboard in HTML format (with a plain text backup, which for now is in markdown format) with the `-c` option.
 
-This was 100% made to procrastinate actually doing any uni work and may well be reinventing the wheel (I am actually not sure but there's probably a few bibtex to html programs that exist) in which case you're probably better off using those.
+This was 100% made to procrastinate actually doing any uni work and may well be reinventing the wheel (I am actually not sure but there's probably a few bibtex to html programs that exist) in which case you're probably better off using those. However I have now finished in academia (for now?) so will likely not continue work on this tool.
 
 ## Usage
 

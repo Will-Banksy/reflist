@@ -63,7 +63,7 @@ fn main() -> ExitCode {
 		}
 	};
 
-	println!("Config: {:?}", config);
+	eprintln!("Info: Config: {:?}", config);
 
 	let mut bibtext = String::new();
 	if let Err(e) = args.file.read_to_string(&mut bibtext) {
@@ -83,10 +83,15 @@ fn main() -> ExitCode {
 	let mut references = Vec::new();
 
 	let mut bib_entries: Vec<Entry> = bib.into_iter().collect();
-	bib_entries.sort_by_key(|entry| entry.get_as::<String>(&args.sort_by).unwrap());
+	bib_entries.sort_by_key(|entry| entry.get_as::<String>(&args.sort_by).unwrap().to_uppercase());
+
+	let mut type_counts = HashMap::new();
 
 	for entry in bib_entries {
 		let entry_type = entry.entry_type.to_string();
+
+		type_counts.entry(entry_type.clone()).and_modify(|c| *c += 1).or_insert(1);
+
 		if let Some(mut reference) = config.formats.get(&entry_type).cloned() {
 			for field in &format_fields[&entry_type] {
 				if let Ok(value) = entry.get_as::<String>(field) {
@@ -98,6 +103,14 @@ fn main() -> ExitCode {
 			references.push(reference);
 		} else {
 			eprintln!("Warning: Entry type {} does not have a reference format - omitting", entry.entry_type.to_string())
+		}
+	}
+
+	if args.counts {
+		eprintln!("Info: Processing {} references", references.len());
+		for (ref_type, count) in type_counts {
+			let percent = (count as f32 / references.len() as f32) * 100.0;
+			eprintln!("-> \t\"{ref_type}\": \t{count} ({percent:.1}%)");
 		}
 	}
 
